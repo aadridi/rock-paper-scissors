@@ -22,32 +22,33 @@ const getHumanChoice = () => {
 };
 
 // A function that starts a new round
-const playRound = (computerChoice, humanChoice, computerScore, humanScore) => {
+const playRound = (computerChoice, humanChoice) => {
 	if (computerChoice === humanChoice) {
 		console.log("It's a tie! None of you gets ANY POINT.");
+		return 'tie';
 	} else if (computerChoice === 'ROCK') {
 		if (humanChoice === 'SCISSORS') {
 			console.log('You lose! ROCK beats SCISSORS.');
-			return computerScore++;
+			return 'computer';
 		} else {
 			console.log('You win! PAPER beats ROCK.');
-			return humanScore++;
+			return 'human';
 		}
 	} else if (computerChoice === 'SCISSORS') {
 		if (humanChoice === 'PAPER') {
 			console.log('You lose! SCISSORS beats PAPER.');
-			return computerScore++;
+			return 'computer';
 		} else {
 			console.log('You win! ROCK beats SCISSORS.');
-			return humanScore++;
+			return 'human';
 		}
 	} else if (computerChoice === 'PAPER') {
 		if (humanChoice === 'ROCK') {
 			console.log('You lose! PAPER beats ROCK.');
-			return computerScore++;
+			return 'computer';
 		} else {
 			console.log('You win! SCISSORS beats PAPER.');
-			return humanScore++;
+			return 'human';
 		}
 	}
 };
@@ -58,10 +59,20 @@ const playGame = () => {
 
 	for (let i = 0; i < 5; i++) {
 		console.log(`Game n°${i + 1}:`);
-		playRound(getComputerChoice(), getHumanChoice(), computerScore, humanScore);
+		let result = playRound(getComputerChoice(), getHumanChoice());
+		switch (result) {
+			case 'computer':
+				computerScore++;
+				break;
+			case 'human':
+				humanScore++;
+				break;
+			case 'tie':
+				break;
+		}
 	}
-
 	console.log(`Human Score is ${humanScore} and Computer Score is ${computerScore}.`);
+	alert('Check the console for the final result.');
 };
 
 playGame();
