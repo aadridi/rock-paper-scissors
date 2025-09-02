@@ -76,3 +76,5 @@ const playGame = () => {
 };
 
 playGame();
+
+console.log('Un petit test pour git!');
