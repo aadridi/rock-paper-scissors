@@ -3,11 +3,23 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="styles.css" />
 		<title>Rock - Paper - Scissors</title>
 		<script src="script.js" defer></script>
 	</head>
 	<body>
 		<h1>Rock - Paper - Scissors</h1>
-		<p>Play in the Console !</p>
+		<p>Version 2.0 available : now you can play directly on the web page !</p>
+		<p>Start by pressing any of the following button :</p>
+		<div class="buttons">
+			<button type="button" value="paper">PAPER</button>
+			<button type="button" value="rock">ROCK</button>
+			<button type="button" value="scissors">SCISSORS</button>
+		</div>
+		<div class="results">
+			<p class="current-round"></p>
+			<p class="current-score">Computer : <span class="computer-score"></span> ; Human : <span class="human-score"></span> ;</p>
+		</div>
+		<button type="button" id="restart">RESTART</button>
 	</body>
 </html>

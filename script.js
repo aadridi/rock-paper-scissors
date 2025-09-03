@@ -1,6 +1,6 @@
 console.log("Welcome to a classic game of 'ROCK, PAPER, SCISSORS'");
 
-// Getting the computer's choice by using Math.random
+// Getting the computer's choice
 const getComputerChoice = () => {
 	let randomNum = Math.floor(Math.random() * 3);
 	switch (randomNum) {
@@ -10,71 +10,68 @@ const getComputerChoice = () => {
 			return 'PAPER';
 		case 2:
 			return 'SCISSORS';
-		default:
-			console.log('There has been an error with the computer output');
 	}
 };
 
-// Getting the player's choice with prompt
-const getHumanChoice = () => {
-	let answer = prompt('Allright, choose an option from the following possibilies : "ROCK", "PAPER" or "SCISSORS"');
-	return answer.toUpperCase();
-};
+let humanScore = 0;
+let computerScore = 0;
 
-// A function that starts a new round
+const buttons = document.querySelectorAll('.buttons button');
+const currentRound = document.querySelector('.current-round');
+const computerScoreSpan = document.querySelector('.computer-score');
+const humanScoreSpan = document.querySelector('.human-score');
+
+// Adding EventListeners for each button
+buttons.forEach((button) =>
+	button.addEventListener('click', (e) => {
+		// Getting the player's choice
+		let playerSelection = e.target.value.toUpperCase();
+		let result = playRound(getComputerChoice(), playerSelection);
+
+		if (result === 'computer') {
+			computerScore++;
+		} else if (result === 'human') {
+			humanScore++;
+		}
+
+		currentRound.textContent = `Round result: ${result}`;
+		computerScoreSpan.textContent = computerScore;
+		humanScoreSpan.textContent = humanScore;
+
+		// Vérifier si quelqu'un a gagné
+		if (humanScore === 5 || computerScore === 5) {
+			const winner = humanScore === 5 ? 'You win the game! 🎉' : 'Computer wins the game! 🤖';
+			currentRound.textContent = winner;
+
+			// Désactiver les boutons pour stopper le jeu
+			buttons.forEach((btn) => (btn.disabled = true));
+		}
+	})
+);
+
+// Fonction pour jouer un round
 const playRound = (computerChoice, humanChoice) => {
 	if (computerChoice === humanChoice) {
-		console.log("It's a tie! None of you gets ANY POINT.");
 		return 'tie';
 	} else if (computerChoice === 'ROCK') {
-		if (humanChoice === 'SCISSORS') {
-			console.log('You lose! ROCK beats SCISSORS.');
-			return 'computer';
-		} else {
-			console.log('You win! PAPER beats ROCK.');
-			return 'human';
-		}
+		return humanChoice === 'SCISSORS' ? 'computer' : 'human';
 	} else if (computerChoice === 'SCISSORS') {
-		if (humanChoice === 'PAPER') {
-			console.log('You lose! SCISSORS beats PAPER.');
-			return 'computer';
-		} else {
-			console.log('You win! ROCK beats SCISSORS.');
-			return 'human';
-		}
+		return humanChoice === 'PAPER' ? 'computer' : 'human';
 	} else if (computerChoice === 'PAPER') {
-		if (humanChoice === 'ROCK') {
-			console.log('You lose! PAPER beats ROCK.');
-			return 'computer';
-		} else {
-			console.log('You win! SCISSORS beats PAPER.');
-			return 'human';
-		}
+		return humanChoice === 'ROCK' ? 'computer' : 'human';
 	}
 };
 
-const playGame = () => {
-	let humanScore = 0;
-	let computerScore = 0;
+const restartBtn = document.querySelector('#restart');
 
-	for (let i = 0; i < 5; i++) {
-		console.log(`Game n°${i + 1}:`);
-		let result = playRound(getComputerChoice(), getHumanChoice());
-		switch (result) {
-			case 'computer':
-				computerScore++;
-				break;
-			case 'human':
-				humanScore++;
-				break;
-			case 'tie':
-				break;
-		}
-	}
-	console.log(`Human Score is ${humanScore} and Computer Score is ${computerScore}.`);
-	alert('Check the console for the final result.');
-};
+restartBtn.addEventListener('click', () => {
+	humanScore = 0;
+	computerScore = 0;
 
-playGame();
+	humanScoreSpan.textContent = humanScore;
+	computerScoreSpan.textContent = computerScore;
+	currentRound.textContent = 'Game restarted! Make your move.';
 
-console.log('Un petit test pour git!');
+	// Réactiver les boutons de jeu
+	buttons.forEach((btn) => (btn.disabled = false));
+});
